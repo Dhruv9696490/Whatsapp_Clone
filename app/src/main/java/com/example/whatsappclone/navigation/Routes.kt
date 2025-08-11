@@ -15,6 +15,7 @@ sealed class Routes{
     data object Login : Routes()
     data object Sign : Routes()
     data object Home : Routes()
+    data object Chat : Routes()
     data object DpDialogue : Routes()
     data object Setting : Routes()
     data object Profile : Routes()

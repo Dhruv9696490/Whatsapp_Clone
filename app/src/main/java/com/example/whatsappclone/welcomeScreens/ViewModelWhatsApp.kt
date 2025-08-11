@@ -24,9 +24,8 @@ class ViewModelWhatsApp: ViewModel(){
                 val id= result.result?.user?.uid
                 Firebase.firestore.collection("users")
                     .document(id!!).set(
-                        UserProfile(message = "hello",
+                        UserProfile(
                             name = name,
-                            time = "10:34",
                             uid = id,
                             url = "https://res.cloudinary.com/dvg3vkutf/image/upload/v1754678207/a04d849cf591c2f980548b982f461401_idmgct.jpg",
                             about = "Hey there! I am using WhatsApp.",

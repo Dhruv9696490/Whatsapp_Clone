@@ -1,4 +1,4 @@
-package com.example.whatsappclone.NavScreen
+package com.example.whatsappclone.navScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -62,9 +62,9 @@ fun Chats(modifier: Modifier, userList: List<UserProfile>, nav:(UserProfile)->Un
                         Spacer(Modifier.width(8.dp))
                         Column(modifier = Modifier.weight(1f)){
                             Text(user.name+"(You)", fontWeight = FontWeight.Bold)
-                                Text(user.message, color = Color.DarkGray)
+                                Text("Message", color = Color.DarkGray)
                         }
-
+                        Text("2:30 PM", fontWeight = FontWeight.Bold, color = Color.LightGray)
                     }
                 }
             }

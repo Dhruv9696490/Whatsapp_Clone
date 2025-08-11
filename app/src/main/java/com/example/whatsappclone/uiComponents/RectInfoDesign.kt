@@ -1,6 +1,5 @@
 package com.example.whatsappclone.uiComponents
 
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,16 +18,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.whatsappclone.ChatScreen
+import com.example.whatsappclone.Utils
 import com.example.whatsappclone.data.UserProfile
 import com.example.whatsappclone.navigation.Routes
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun RectInfoDesign(userProfile: UserProfile, exp: Boolean,nav:(UserProfile)->Unit){
-    val uid = FirebaseAuth.getInstance().currentUser?.uid
-    if(uid!=userProfile.uid){
+    val senderId = FirebaseAuth.getInstance().currentUser?.uid
+    if(senderId!=userProfile.uid){
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
@@ -42,20 +42,33 @@ fun RectInfoDesign(userProfile: UserProfile, exp: Boolean,nav:(UserProfile)->Uni
                     }),
                 contentScale = ContentScale.Crop)
             Spacer(Modifier.width(8.dp))
-            Column(modifier = Modifier.weight(1f)){
+            Column(modifier = Modifier
+                .weight(1f)
+                .clickable(onClick = {
+                    Utils.navController.navigate(Routes.Chat.toString() + "/${userProfile.uid}")
+                })){
                 Text(userProfile.name, fontWeight = FontWeight.Bold)
                 if (!exp){
-                    Text(userProfile.message, color = Color.DarkGray)
+                    Text("Message", color = Color.DarkGray)
                 }else{
-                    Text(userProfile.time, color = Color.DarkGray)
+                    Text("3:30 PM", color = Color.DarkGray)
                 }
-
             }
             if (!exp){
-                Text(userProfile.time, fontWeight = FontWeight.Bold, color = Color.LightGray)
+                Text("2:30 PM", fontWeight = FontWeight.Bold, color = Color.LightGray)
             }
 
         }
     }
 
 }
+
+
+
+
+
+
+
+
+
+

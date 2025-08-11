@@ -80,6 +80,7 @@ fun uploadToCloudinary(context: Context, imageUri: Uri, onResult: (String?) -> U
                 .build()
         ).build()
 
+
     client.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
             onResult(null)
@@ -90,6 +91,7 @@ fun uploadToCloudinary(context: Context, imageUri: Uri, onResult: (String?) -> U
             val url = json.optString("secure_url")
             onResult(url)
         }
+
     })
 }
 @Composable

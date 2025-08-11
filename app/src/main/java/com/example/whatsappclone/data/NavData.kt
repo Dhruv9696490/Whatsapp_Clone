@@ -25,7 +25,12 @@ data class UserProfile(
     val about: String="",
     val uid: String="",
     val name: String="",
-    val url: String="",
-    val message: String="",
-    val time: String=""
+    val url: String=""
 ): Parcelable
+
+data class Message(
+    val senderId: String = "",
+    val receiverId: String = "",
+    val text: String = "",
+    val timestamp: Long = System.currentTimeMillis()
+)

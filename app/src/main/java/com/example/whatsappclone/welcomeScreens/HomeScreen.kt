@@ -54,13 +54,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.whatsappclone.NavScreen.Calls
-import com.example.whatsappclone.NavScreen.Chats
 import com.example.whatsappclone.NavScreen.Communication
 import com.example.whatsappclone.NavScreen.Update
 import com.example.whatsappclone.R
 import com.example.whatsappclone.data.DropDownData
 import com.example.whatsappclone.data.NavData
 import com.example.whatsappclone.data.UserProfile
+import com.example.whatsappclone.navScreen.Chats
 import com.example.whatsappclone.navigation.Routes
 import com.example.whatsappclone.navigation.Todo
 import com.google.firebase.Firebase

@@ -1,15 +1,15 @@
 package com.example.whatsappclone.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import com.example.whatsappclone.ChatScreen
 import com.example.whatsappclone.ProfileScreen
 import com.example.whatsappclone.SettingScreen
+import com.example.whatsappclone.Utils
 import com.example.whatsappclone.data.UserProfile
 import com.example.whatsappclone.splashScreen.SplashScreen
 import com.example.whatsappclone.uiComponents.DialogOfDP
@@ -24,7 +24,11 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun WhatsappNavigation(){
     val navController = rememberNavController()
-    val user = FirebaseAuth.getInstance().currentUser?.uid
+
+        val user = FirebaseAuth.getInstance().currentUser?.uid
+
+
+    Utils.navController=navController
     NavHost(navController = navController, startDestination =  if(user==null)Routes.Splash.toString() else Routes.Home.toString() ){
         composable(Routes.Splash.toString()){
             SplashScreen(navController)
@@ -41,6 +45,13 @@ fun WhatsappNavigation(){
         composable(Routes.Sign.toString()){
             SignInScreen(navController)
         }
+        composable(Routes.Chat.toString()+"/{it}"){
+            val id  = it.arguments?.getString("it") ?:""
+                ChatScreen(id,nav = {it->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("cat",it)
+                    navController.navigate(Routes.DpDialogue.toString())
+                })
+        }
         composable(Routes.Setting.toString()){
             SettingScreen(navController)
         }
@@ -54,8 +65,8 @@ fun WhatsappNavigation(){
             },navController)
         }
         dialog(Routes.DpDialogue.toString()){
-            val user = navController.previousBackStackEntry?.savedStateHandle?.get<UserProfile>("cat") ?: UserProfile()
-            DialogOfDP(user,navController)
+            val users = navController.previousBackStackEntry?.savedStateHandle?.get<UserProfile>("cat") ?: UserProfile()
+            DialogOfDP(users,navController)
         }
     }
 }

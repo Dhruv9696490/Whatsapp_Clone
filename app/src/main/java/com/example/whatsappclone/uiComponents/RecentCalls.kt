@@ -44,7 +44,7 @@ fun RecentCalls(userProfile: UserProfile){
         Column(modifier = Modifier.weight(1f)) {
             Text(userProfile.name, fontWeight = FontWeight.Bold)
             Text(
-                "↶ Yesterday, " + userProfile.time + " PM",
+                "↶ Yesterday, " + "10:38" + " PM",
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.SansSerif,
                 color = Color.Gray
