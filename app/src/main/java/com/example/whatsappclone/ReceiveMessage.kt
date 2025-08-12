@@ -7,7 +7,7 @@ import com.google.firebase.firestore.firestore
 import kotlin.collections.sorted
 import kotlin.jvm.java
 
-fun receiverMessage(currentUserId: String, otherUserId: String, callback: (List<Message>) -> Unit) {
+fun receiverMessage(currentUserId: String, otherUserId: String, callback: (List<Message>) -> Unit){
 
 
     if (currentUserId == otherUserId) {
@@ -19,10 +19,9 @@ fun receiverMessage(currentUserId: String, otherUserId: String, callback: (List<
     Firebase.firestore.collection("chats")
         .document(chatId)
         .collection("messages")
-        .orderBy("timestamp") // Make sure this field exists in Firestore
-        .addSnapshotListener { snapshot, e ->
-            if (e != null || snapshot == null) return@addSnapshotListener
-            val messages = snapshot.toObjects(Message::class.java)
+        .orderBy("timestamp")
+        .addSnapshotListener{ snapshot, e ->
+            val messages = snapshot?.toObjects(Message::class.java) ?: emptyList()
             callback(messages)
         }
 }

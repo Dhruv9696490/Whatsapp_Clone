@@ -45,7 +45,7 @@ fun ChatScreen(otherUserId: String, nav:(UserProfile)-> Unit) {
         Firebase.firestore.collection("users")
             .document(otherUserId)
             .get()
-            .addOnSuccessListener { doc ->
+            .addOnSuccessListener{ doc ->
                 doc.toObject(UserProfile::class.java)?.let {
                     otherUserInfo = it
                 }
@@ -53,29 +53,29 @@ fun ChatScreen(otherUserId: String, nav:(UserProfile)-> Unit) {
     }
 
     // Listen for messages
-    LaunchedEffect(Unit) {
-        receiverMessage(currentUserId, otherUserId) {
+    LaunchedEffect(Unit){
+        receiverMessage(currentUserId, otherUserId,{
             messages = it
             scope.launch {
                 if (messages.isNotEmpty()) {
-                    listState.animateScrollToItem(messages.size - 1)
+                    listState.scrollToItem(messages.lastIndex)
                 }
             }
-        }
+        })
     }
 
     Scaffold(
+        modifier = Modifier.imePadding(),
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 title = {
-                    Row(modifier = Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
+                    Row(modifier = Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically){
                         IconButton(onClick = {
                             Utils.navController.popBackStack()
                         }, modifier = Modifier.size(32.dp)) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back",modifier = Modifier.size(32.dp))
                         }
                         Spacer(modifier = Modifier.width(4.dp))
-
                         AsyncImage(
                             model = otherUserInfo?.url ?: "",
                             contentDescription = "Profile picture",
@@ -86,13 +86,10 @@ fun ChatScreen(otherUserId: String, nav:(UserProfile)-> Unit) {
                                     otherUserInfo?.let {
                                         nav(it)
                                     }
-
                                 }),
                             contentScale = ContentScale.Crop
                         )
-
                         Spacer(modifier = Modifier.width(8.dp))
-
                         Text(
                             text = otherUserInfo?.name ?: "",
                             fontWeight = FontWeight.Bold,
@@ -111,9 +108,10 @@ fun ChatScreen(otherUserId: String, nav:(UserProfile)-> Unit) {
         bottomBar = {
             MessageInputBar(
                 messageText = messageText,
-                onMessageChange = { messageText = it },
+                onMessageChange = {it->
+                    messageText = it },
                 onSendClick = {
-                    if (messageText.isNotBlank()) {
+                    if(messageText.isNotBlank()) {
                         sendMessage(currentUserId, otherUserId, messageText)
                         messageText = ""
                     }
@@ -128,8 +126,8 @@ fun ChatScreen(otherUserId: String, nav:(UserProfile)-> Unit) {
                 .background(Color(0xFFEDEDED)),
             state = listState,
             contentPadding = PaddingValues(8.dp)
-        ) {
-            items(messages) { msg ->
+        ){
+            items(messages){ msg ->
                 MessageBubble(
                     message = msg.text,
                     isOwnMessage = msg.senderId == currentUserId
@@ -143,7 +141,7 @@ fun MessageBubble(message: String, isOwnMessage: Boolean) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isOwnMessage) Arrangement.End else Arrangement.Start
-    ) {
+    ){
         Box(
             modifier = Modifier
                 .background(
@@ -164,14 +162,14 @@ fun MessageInputBar(
     messageText: String,
     onMessageChange: (String) -> Unit,
     onSendClick: () -> Unit
-) {
+){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
-    ) {
-        TextField(
+    ){
+        OutlinedTextField(
             value = messageText,
             onValueChange = onMessageChange,
             placeholder = { Text("Type a message") },
